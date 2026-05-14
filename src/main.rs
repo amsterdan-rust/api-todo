@@ -6,7 +6,11 @@ mod todo;
 async fn main() {
     let app = app::create_app();
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000")
+        .await
+        .expect("failed to bind TCP listener");
 
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .await
+        .expect("failed to start server");
 }
