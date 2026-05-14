@@ -3,5 +3,7 @@ mod dto;
 pub mod error;
 mod handler;
 mod repository;
-mod router;
-mod service;
+pub mod router;
+pub mod service;
+
+pub use router::routes;
