@@ -1,0 +1,26 @@
+info:
+  name: UPDATE
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{base_url}}/todos/:id"
+  params:
+    - name: id
+      value: 92185e1f-ce9a-4b89-b9c5-5514cd6d43be
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Estudar rust",
+        "description": "Axum e Leptos"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

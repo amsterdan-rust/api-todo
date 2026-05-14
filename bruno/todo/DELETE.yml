@@ -1,0 +1,19 @@
+info:
+  name: DELETE
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{base_url}}/todos/:id"
+  params:
+    - name: id
+      value: 228d2f1e-709e-4837-89e0-1b4357edbd43
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

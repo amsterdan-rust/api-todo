@@ -1,0 +1,21 @@
+info:
+  name: CREATE
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}/todos"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Estudar rust"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
