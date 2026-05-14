@@ -2,21 +2,21 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum TodoError {
-    #[error("todo not found")]
+    #[error("tarefa não encontrada")]
     NotFound,
 
-    #[error("todo title cannot be empty")]
+    #[error("o título da tarefa não pode estar vazio")]
     InvalidTitle,
 
-    #[error("todo title cannot be longer than 100 characters")]
+    #[error("o título da tarefa não pode ter mais de 100 caracteres")]
     TitleTooLong,
 
-    #[error("todo is already completed")]
+    #[error("a tarefa já está concluída")]
     AlreadyCompleted,
 
-    #[error("todo is already open")]
+    #[error("a tarefa já está aberta")]
     AlreadyOpen,
 
-    #[error("unexpected repository error")]
+    #[error("erro inesperado no repositório")]
     Repository,
 }

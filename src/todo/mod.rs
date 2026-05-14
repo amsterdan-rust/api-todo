@@ -1,6 +1,6 @@
 mod domain;
 mod dto;
-mod error;
+pub mod error;
 mod handler;
 mod repository;
 mod router;
