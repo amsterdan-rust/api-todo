@@ -1,0 +1,28 @@
+---------------------- Resumo ----------------------
+
+HTTP/Axum
+  handler.rs
+  router.rs
+
+Application
+  service.rs
+
+Domain
+  domain.rs
+  error.rs
+
+Ports
+  repository.rs
+
+Adapters
+  infrastructure/postgres/todo_repository.rs
+
+---------------------- Desenho final ----------------------
+
+Axum Handler
+    ↓
+TodoService
+    ↓
+TodoRepository trait
+    ↓
+PostgresTodoRepository
