@@ -1,13 +1,13 @@
+use crate::todo;
 use axum::{Json, Router, routing::get};
 use serde::Serialize;
+use sqlx::PgPool;
 use tower_http::{
     LatencyUnit,
     cors::{Any, CorsLayer},
     trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer},
 };
 use tracing::Level;
-
-use crate::todo;
 
 #[derive(Debug, Serialize)]
 struct HealthResponse {
@@ -18,7 +18,7 @@ async fn health_check() -> Json<HealthResponse> {
     Json(HealthResponse { status: "ok" })
 }
 
-pub fn create_app() -> Router {
+pub fn create_app(db_pool: PgPool) -> Router {
     let cors = CorsLayer::new()
         .allow_origin(Any)
         .allow_methods(Any)
@@ -39,7 +39,7 @@ pub fn create_app() -> Router {
 
     Router::new()
         .route("/health", get(health_check))
-        .nest("/todos", todo::routes())
+        .nest("/todos", todo::routes(db_pool.clone()))
         .layer(cors)
         .layer(trace)
 }

@@ -4,6 +4,7 @@ use axum::{
     Router,
     routing::{get, patch},
 };
+use sqlx::PgPool;
 
 use super::{
     handler::{
@@ -13,7 +14,7 @@ use super::{
     service::TodoService,
 };
 
-pub fn routes() -> Router {
+pub fn routes(_db_pool: PgPool) -> Router {
     let repository = Arc::new(InMemoryTodoRepository::new());
     let service = TodoService::new(repository);
 

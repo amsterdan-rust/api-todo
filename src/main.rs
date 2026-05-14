@@ -4,6 +4,8 @@ mod todo;
 
 #[tokio::main]
 async fn main() {
+    dotenvy::dotenv().ok();
+
     tracing_subscriber::fmt()
         .with_env_filter(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -13,7 +15,12 @@ async fn main() {
 
     tracing::info!("starting todo api");
 
-    let app = app::create_app();
+    let database_url =
+        std::env::var("DATABASE_URL").expect("DATABASE_URL environment variable must be set");
+
+    let db_pool = shared::db::create_pool(&database_url).await;
+
+    let app = app::create_app(db_pool);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8000")
         .await
