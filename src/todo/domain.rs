@@ -170,3 +170,136 @@ impl Todo {
         self.updated_at
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_create_valid_todo_title() {
+        let title = TodoTitle::new("Estudar Axum".to_string()).unwrap();
+
+        assert_eq!(title.as_str(), "Estudar Axum");
+    }
+
+    #[test]
+    fn should_trim_todo_title() {
+        let title = TodoTitle::new("   Estudar Axum   ".to_string()).unwrap();
+
+        assert_eq!(title.as_str(), "Estudar Axum");
+    }
+
+    #[test]
+    fn should_reject_empty_todo_title() {
+        let result = TodoTitle::new("   ".to_string());
+
+        assert!(matches!(result, Err(TodoError::InvalidTitle)));
+    }
+
+    #[test]
+    fn should_reject_todo_title_longer_than_100_characters() {
+        let title = "a".repeat(101);
+
+        let result = TodoTitle::new(title);
+
+        assert!(matches!(result, Err(TodoError::TitleTooLong)));
+    }
+
+    #[test]
+    fn should_create_description_with_text() {
+        let description = TodoDescription::new(Some("Comprar leite".to_string()));
+
+        assert_eq!(description.as_deref(), Some("Comprar leite"));
+    }
+
+    #[test]
+    fn should_trim_description() {
+        let description = TodoDescription::new(Some("   Comprar leite   ".to_string()));
+
+        assert_eq!(description.as_deref(), Some("Comprar leite"));
+    }
+
+    #[test]
+    fn should_convert_empty_description_to_none() {
+        let description = TodoDescription::new(Some("   ".to_string()));
+
+        assert_eq!(description.as_deref(), None);
+    }
+
+    #[test]
+    fn should_create_new_todo_as_open() {
+        let title = TodoTitle::new("Estudar Rust".to_string()).unwrap();
+        let description = TodoDescription::new(None);
+
+        let todo = Todo::new(title, description);
+
+        assert!(!todo.completed());
+        assert_eq!(todo.title().as_str(), "Estudar Rust");
+        assert_eq!(todo.description().as_deref(), None);
+    }
+
+    #[test]
+    fn should_complete_todo() {
+        let title = TodoTitle::new("Estudar Rust".to_string()).unwrap();
+        let description = TodoDescription::new(None);
+        let mut todo = Todo::new(title, description);
+
+        let result = todo.complete();
+
+        assert!(result.is_ok());
+        assert!(todo.completed());
+    }
+
+    #[test]
+    fn should_not_complete_already_completed_todo() {
+        let title = TodoTitle::new("Estudar Rust".to_string()).unwrap();
+        let description = TodoDescription::new(None);
+        let mut todo = Todo::new(title, description);
+
+        todo.complete().unwrap();
+
+        let result = todo.complete();
+
+        assert!(matches!(result, Err(TodoError::AlreadyCompleted)));
+    }
+
+    #[test]
+    fn should_reopen_completed_todo() {
+        let title = TodoTitle::new("Estudar Rust".to_string()).unwrap();
+        let description = TodoDescription::new(None);
+        let mut todo = Todo::new(title, description);
+
+        todo.complete().unwrap();
+
+        let result = todo.reopen();
+
+        assert!(result.is_ok());
+        assert!(!todo.completed());
+    }
+
+    #[test]
+    fn should_not_reopen_open_todo() {
+        let title = TodoTitle::new("Estudar Rust".to_string()).unwrap();
+        let description = TodoDescription::new(None);
+        let mut todo = Todo::new(title, description);
+
+        let result = todo.reopen();
+
+        assert!(matches!(result, Err(TodoError::AlreadyOpen)));
+    }
+
+    #[test]
+    fn should_update_todo_title_and_description() {
+        let title = TodoTitle::new("Título antigo".to_string()).unwrap();
+        let description = TodoDescription::new(Some("Descrição antiga".to_string()));
+        let mut todo = Todo::new(title, description);
+
+        let new_title = TodoTitle::new("Título novo".to_string()).unwrap();
+        let new_description = TodoDescription::new(Some("Descrição nova".to_string()));
+
+        todo.update(Some(new_title), Some(new_description));
+
+        assert_eq!(todo.title().as_str(), "Título novo");
+        assert_eq!(todo.description().as_deref(), Some("Descrição nova"));
+    }
+}
