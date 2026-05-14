@@ -10,11 +10,11 @@ use super::{
     dto::{CreateTodoInput, CreateTodoRequest, TodoResponse, UpdateTodoInput, UpdateTodoRequest},
     service::TodoService,
 };
-use crate::shared::error::AppError;
+use crate::shared::{error::AppError, extractors::ValidatedJson};
 
 pub async fn create_todo(
     State(service): State<TodoService>,
-    Json(request): Json<CreateTodoRequest>,
+    ValidatedJson(request): ValidatedJson<CreateTodoRequest>,
 ) -> Result<(StatusCode, Json<TodoResponse>), AppError> {
     let input: CreateTodoInput = request.into();
 
@@ -47,7 +47,7 @@ pub async fn get_todo(
 pub async fn update_todo(
     State(service): State<TodoService>,
     Path(id): Path<Uuid>,
-    Json(request): Json<UpdateTodoRequest>,
+    ValidatedJson(request): ValidatedJson<UpdateTodoRequest>,
 ) -> Result<Json<TodoResponse>, AppError> {
     let id = TodoId::from_uuid(id);
     let input: UpdateTodoInput = request.into();
