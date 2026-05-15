@@ -22,11 +22,15 @@ async fn main() {
 
     let app = app::create_app(db_pool);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000")
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8000".to_string());
+
+    let address = format!("0.0.0.0:{port}");
+
+    let listener = tokio::net::TcpListener::bind(&address)
         .await
         .expect("failed to bind TCP listener");
 
-    tracing::info!("server listening on http://0.0.0.0:8000");
+    tracing::info!("server listening on http://{address}");
 
     axum::serve(listener, app)
         .await
