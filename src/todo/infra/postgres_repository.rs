@@ -185,8 +185,8 @@ mod tests {
         async fn create() -> Self {
             dotenvy::dotenv().ok();
 
-            let database_url = std::env::var("DATABASE_URL")
-                .expect("DATABASE_URL environment variable must be set");
+            let database_url = std::env::var("TEST_DATABASE_URL")
+                .expect("TEST_DATABASE_URL environment variable must be set");
 
             let database_name = format!("todo_api_test_{}", Uuid::new_v4().simple());
 
