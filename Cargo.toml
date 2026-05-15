@@ -25,3 +25,5 @@ sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid"
 dotenvy = "0.15"
 
 url = "2"
+
+tower = { version = "0.5", features = ["util"] }
