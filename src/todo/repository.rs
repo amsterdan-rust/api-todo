@@ -139,7 +139,10 @@ impl TodoRepository for PostgresTodoRepository {
         .bind(todo.updated_at())
         .execute(&self.db_pool)
         .await
-        .map_err(|_| TodoError::Repository)?;
+        .map_err(|error| {
+            tracing::error!(?error, "failed to create todo");
+            TodoError::Repository
+        })?;
 
         Ok(todo)
     }
@@ -154,7 +157,10 @@ impl TodoRepository for PostgresTodoRepository {
         )
         .fetch_all(&self.db_pool)
         .await
-        .map_err(|_| TodoError::Repository)?;
+        .map_err(|error| {
+            tracing::error!(?error, "failed to list todos");
+            TodoError::Repository
+        })?;
 
         rows.into_iter().map(Todo::try_from).collect()
     }
@@ -170,7 +176,10 @@ impl TodoRepository for PostgresTodoRepository {
         .bind(id.as_uuid())
         .fetch_optional(&self.db_pool)
         .await
-        .map_err(|_| TodoError::Repository)?;
+        .map_err(|error| {
+            tracing::error!(?error, todo_id = %id.as_uuid(), "failed to find todo by id");
+            TodoError::Repository
+        })?;
 
         row.map(Todo::try_from).transpose()
     }
@@ -193,7 +202,15 @@ impl TodoRepository for PostgresTodoRepository {
         .bind(todo.updated_at())
         .execute(&self.db_pool)
         .await
-        .map_err(|_| TodoError::Repository)?;
+        .map_err(|error| {
+            tracing::error!(
+                ?error,
+                todo_id = %todo.id().as_uuid(),
+                "failed to update todo"
+            );
+
+            TodoError::Repository
+        })?;
 
         if result.rows_affected() == 0 {
             return Err(TodoError::NotFound);
@@ -212,7 +229,10 @@ impl TodoRepository for PostgresTodoRepository {
         .bind(id.as_uuid())
         .execute(&self.db_pool)
         .await
-        .map_err(|_| TodoError::Repository)?;
+        .map_err(|error| {
+            tracing::error!(?error, todo_id = %id.as_uuid(), "failed to delete todo");
+            TodoError::Repository
+        })?;
 
         if result.rows_affected() == 0 {
             return Err(TodoError::NotFound);
