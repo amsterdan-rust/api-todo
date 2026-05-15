@@ -21,10 +21,10 @@ pub fn routes(db_pool: PgPool) -> Router {
     Router::new()
         .route("/", get(list_todos).post(create_todo))
         .route(
-            "/{id}",
+            "/{todo_id}",
             get(get_todo).patch(update_todo).delete(delete_todo),
         )
-        .route("/{id}/complete", patch(complete_todo))
-        .route("/{id}/reopen", patch(reopen_todo))
+        .route("/{todo_id}/complete", patch(complete_todo))
+        .route("/{todo_id}/reopen", patch(reopen_todo))
         .with_state(service)
 }
