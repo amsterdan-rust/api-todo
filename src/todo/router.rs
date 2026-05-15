@@ -10,7 +10,7 @@ use super::{
     handler::{
         complete_todo, create_todo, delete_todo, get_todo, list_todos, reopen_todo, update_todo,
     },
-    repository::PostgresTodoRepository,
+    infra::postgres_repository::PostgresTodoRepository,
     service::TodoService,
 };
 

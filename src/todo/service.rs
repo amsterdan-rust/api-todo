@@ -77,7 +77,7 @@ mod tests {
     use std::sync::Arc;
 
     use super::*;
-    use crate::todo::repository::InMemoryTodoRepository;
+    use crate::todo::infra::in_memory_repository::InMemoryTodoRepository;
 
     fn make_service() -> TodoService {
         let repository = Arc::new(InMemoryTodoRepository::new());
