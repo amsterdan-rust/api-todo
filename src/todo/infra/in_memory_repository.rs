@@ -10,18 +10,18 @@ use crate::todo::{
 };
 
 #[derive(Debug, Clone, Default)]
-pub struct InMemoryTodoRepository {
+pub struct _InMemoryTodoRepository {
     todos: Arc<RwLock<HashMap<TodoId, Todo>>>,
 }
 
-impl InMemoryTodoRepository {
-    pub fn new() -> Self {
+impl _InMemoryTodoRepository {
+    pub fn _new() -> Self {
         Self::default()
     }
 }
 
 #[async_trait]
-impl TodoRepository for InMemoryTodoRepository {
+impl TodoRepository for _InMemoryTodoRepository {
     async fn create(&self, todo: Todo) -> Result<Todo, TodoError> {
         let mut todos = self.todos.write().await;
 

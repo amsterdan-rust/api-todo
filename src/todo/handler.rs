@@ -1,8 +1,4 @@
-use axum::{
-    Json,
-    extract::{Path, State},
-    http::StatusCode,
-};
+use axum::{Json, extract::State, http::StatusCode};
 use uuid::Uuid;
 
 use super::{
@@ -10,7 +6,10 @@ use super::{
     dto::{CreateTodoInput, CreateTodoRequest, TodoResponse, UpdateTodoInput, UpdateTodoRequest},
     service::TodoService,
 };
-use crate::shared::{error::AppError, extractors::ValidatedJson};
+use crate::shared::{
+    error::AppError,
+    extractors::{ValidatedJson, ValidatedPath},
+};
 
 pub async fn create_todo(
     State(service): State<TodoService>,
@@ -35,7 +34,7 @@ pub async fn list_todos(
 
 pub async fn get_todo(
     State(service): State<TodoService>,
-    Path(id): Path<Uuid>,
+    ValidatedPath(id): ValidatedPath<Uuid>,
 ) -> Result<Json<TodoResponse>, AppError> {
     let id = TodoId::from_uuid(id);
 
@@ -46,7 +45,7 @@ pub async fn get_todo(
 
 pub async fn update_todo(
     State(service): State<TodoService>,
-    Path(id): Path<Uuid>,
+    ValidatedPath(id): ValidatedPath<Uuid>,
     ValidatedJson(request): ValidatedJson<UpdateTodoRequest>,
 ) -> Result<Json<TodoResponse>, AppError> {
     let id = TodoId::from_uuid(id);
@@ -59,7 +58,7 @@ pub async fn update_todo(
 
 pub async fn delete_todo(
     State(service): State<TodoService>,
-    Path(id): Path<Uuid>,
+    ValidatedPath(id): ValidatedPath<Uuid>,
 ) -> Result<StatusCode, AppError> {
     let id = TodoId::from_uuid(id);
 
@@ -70,7 +69,7 @@ pub async fn delete_todo(
 
 pub async fn complete_todo(
     State(service): State<TodoService>,
-    Path(id): Path<Uuid>,
+    ValidatedPath(id): ValidatedPath<Uuid>,
 ) -> Result<Json<TodoResponse>, AppError> {
     let id = TodoId::from_uuid(id);
 
@@ -81,7 +80,7 @@ pub async fn complete_todo(
 
 pub async fn reopen_todo(
     State(service): State<TodoService>,
-    Path(id): Path<Uuid>,
+    ValidatedPath(id): ValidatedPath<Uuid>,
 ) -> Result<Json<TodoResponse>, AppError> {
     let id = TodoId::from_uuid(id);
 

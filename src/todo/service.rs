@@ -77,10 +77,10 @@ mod tests {
     use std::sync::Arc;
 
     use super::*;
-    use crate::todo::infra::in_memory_repository::InMemoryTodoRepository;
+    use crate::todo::infra::in_memory_repository::_InMemoryTodoRepository;
 
     fn make_service() -> TodoService {
-        let repository = Arc::new(InMemoryTodoRepository::new());
+        let repository = Arc::new(_InMemoryTodoRepository::_new());
 
         TodoService::new(repository)
     }
