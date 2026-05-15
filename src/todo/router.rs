@@ -10,12 +10,12 @@ use super::{
     handler::{
         complete_todo, create_todo, delete_todo, get_todo, list_todos, reopen_todo, update_todo,
     },
-    repository::InMemoryTodoRepository,
+    repository::PostgresTodoRepository,
     service::TodoService,
 };
 
-pub fn routes(_db_pool: PgPool) -> Router {
-    let repository = Arc::new(InMemoryTodoRepository::new());
+pub fn routes(db_pool: PgPool) -> Router {
+    let repository = Arc::new(PostgresTodoRepository::new(db_pool));
     let service = TodoService::new(repository);
 
     Router::new()

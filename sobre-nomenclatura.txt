@@ -1,0 +1,6 @@
+From      = conversão infalível
+TryFrom   = conversão que pode dar erro
+new       = construtor do próprio tipo
+from_xxx  = construtor/conversor específico, geralmente infalível ou mais explícito
+as_xxx    = visão emprestada/barata
+into_xxx  = conversão consumindo o valor
