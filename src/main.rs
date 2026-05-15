@@ -20,6 +20,11 @@ async fn main() {
 
     let db_pool = shared::db::create_pool(&database_url).await;
 
+    sqlx::migrate!()
+        .run(&db_pool)
+        .await
+        .expect("failed to run database migrations");
+
     let app = app::create_app(db_pool);
 
     let port = std::env::var("PORT").unwrap_or_else(|_| "8000".to_string());
