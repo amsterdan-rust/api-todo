@@ -21,5 +21,7 @@ tower-http = { version = "0.6", features = ["trace", "cors"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
-sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid", "time", "macros"] }
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid", "time", "macros", "migrate"] }
 dotenvy = "0.15"
+
+url = "2"
